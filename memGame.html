@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Game</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body class="colFlex">
+    <header class="flexOne box">
+        <H1>Jeremy's Memory Game</H1>
+        <h4>Choose a difficulty and then type the number you see!</h4>
+    </header>
+    <main class="flexOne rowFlex">
+        <div class="playArea box colFlex">
+            <div class="playMat colFlex">
+                <p id="generatedNum" class="hidden"> </p>
+                <input type="number" id="userNum" rows="1"></textarea>
+                <p id="timer" class="hidden"></p>
+                <button type="button" class="hidden" id="submitButton" onclick="checkAnswer()">Submit</button>
+            </div>
+            <div class="btnBox rowFlex">
+                <div class="colFlex difficulty easy" >
+                    <div>
+                        <h1>Easy</h1>
+                        <p id="diffDescrip">Easy Peasy</p>
+                    </div>
+                    <div class="btnBox rowFlex">
+                        <div class="colFlex flexOne">
+                            <label for="diff_1">1</label>
+                            <input type="radio" class="btn" id="diff_1" name="difficulty" onclick="initLevel(1)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_2">2</label>
+                            <input type="radio" class="btn" id="diff_2" name="difficulty" onclick="initLevel(2)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_3">3</label>
+                            <input type="radio" class="btn" id="diff_3" name="difficulty" onclick="initLevel(3)">
+                        </div>
+                     </div>
+                </div>
+                <div class="colFlex difficulty medium">
+                    <div>
+                        <h1>Medium</h1>
+                        <p id="diffDescrip">More Numbers</p>
+                    </div>
+                    <div class="btnBox rowFlex">
+                        <div class="colFlex flexOne">
+                            <label for="diff_4">4</label>
+                            <input type="radio" class="btn" id="diff_4" name="difficulty" onclick="initLevel(4)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_5">5</label>
+                            <input type="radio" class="btn" id="diff_5" name="difficulty" onclick="initLevel(5)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_6">6</label>
+                            <input type="radio" class="btn" id="diff_6" name="difficulty" onclick="initLevel(6)">
+                        </div>
+                     </div>
+                </div>
+                <div class="colFlex difficulty hard">
+                    <div>
+                        <h1>Hard</h1>
+                        <p id="diffDescrip">More Numbers + Flawless</p>
+                    </div>
+                    <div class="btnBox rowFlex">
+                        <div class="colFlex flexOne">
+                            <label for="diff_7">7</label>
+                            <input type="radio" class="btn" id="diff_7" name="difficulty" onclick="initLevel(7)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_8">8</label>
+                            <input type="radio" class="btn" id="diff_8" name="difficulty" onclick="initLevel(8)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_9">9</label>
+                            <input type="radio" class="btn" id="diff_9" name="difficulty" onclick="initLevel(9)">
+                        </div>
+                     </div>
+                </div>
+                <div class="colFlex difficulty expert">
+                    <div>
+                        <h1>Expert</h1>
+                        <p id="diffDescrip">Lvl 9 + Time Limit</p>
+                    </div>
+                    <div class="btnBox rowFlex">
+                        <div class="colFlex flexOne">
+                            <label for="diff_10">10</label>
+                            <input type="radio" class="btn" id="diff_10" name="difficulty" onclick="initLevel(10)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_11">11</label>
+                            <input type="radio" class="btn" id="diff_11" name="difficulty" onclick="initLevel(11)">
+                        </div>
+                        <div class="colFlex flexOne">
+                            <label for="diff_12">12</label>
+                            <input type="radio" class="btn" id="diff_12" name="difficulty" onclick="initLevel(12)">
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="colFlex aside box">
+            <div>
+                <h2 for="difficulty">Current Difficulty:</h2>
+                <h4 id="difficulty">Not Selected</h4>
+            </div>
+            <div>
+                <h2>Total Games Played:</h2>
+                <h4 id="gamesPlayed">0</h4>
+            </div>
+            <div>
+                <h2>Total Wins:</h2>
+                <h4 id="totalWins">0</h4>
+            </div>
+            <div>
+                <h2>Win Rate:</h2>
+                <h4 id="winRate">N/A</h4>
+            </div>
+            <div>
+                <h2>Score:</h2>
+                <h4 id="score">0</h4>
+            </div>
+        </aside>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

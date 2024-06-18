@@ -1,0 +1,121 @@
+.aside {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    align-self: flex-end;
+    padding:10px;
+    gap:10px;
+    height: 100%;
+}
+
+body {
+    background-color: rgb(179, 206, 197);
+}
+
+.box {
+    align-content: center;
+    text-align: center;
+    border: gray 20px inset;
+}
+
+.playMat {
+    display: flex;
+    flex: 5;
+}
+
+.rowFlex {
+    display: flex;
+    flex-direction: row;
+}
+
+.colFlex {
+    display: flex;
+    flex-direction: column;
+}
+
+.playArea {
+    display: flex;
+    flex: 3;
+    font-stretch: extra-expanded;
+    font-size: xx-large;
+    text-align: center;
+    font-weight: bolder;
+    gap: 60px;
+    width: 100%;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.btn {
+    display: flex;
+    flex: 1;
+    gap:5%;
+    height:30px;
+    width:20px;
+}
+
+.btnBox {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    padding:10px;
+}
+
+.difficulty {
+    border-radius: 10px;
+    border: gray solid 8px;
+    flex:1;
+    align-self: justify;
+}
+
+.easy {
+    background-color: green;
+}
+
+.medium {
+    background-color: yellow;
+}
+
+.hard {
+    background-color: orange;
+}
+
+.expert {
+    background-color: red;
+}
+
+.diffCat {
+    display:flex;
+    flex:3;
+}
+
+.flexOne {
+    flex:1;
+}
+
+.justify {
+    align-content: justify;
+}
+
+#userNum {
+    width:40%;
+    align-self: center;
+    height: 30%;
+    font-size: 175%;
+    resize: none;
+}
+
+#submitButton {
+    width: 20%;
+    height: 18%;
+    align-self: center;
+    margin: 15px;
+}
+
+#diffDescrip {
+    align-self: center;
+    font-size: medium;
+}
+
+.hidden {
+    display: none;
+}
