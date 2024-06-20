@@ -1,1 +1,1 @@
-what is this even for
+A game to see if you can remember numbers and things
