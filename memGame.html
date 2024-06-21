@@ -11,10 +11,10 @@
         <H1>Jeremy's Memory Game</H1>
         <h4>Choose a difficulty and then type the number you see!</h4>
     </header>
-    <main class="flexOne rowFlex">
+    <main class="flexOne rowFlex setHeight">
         <div class="playArea box colFlex">
             <div class="playMat colFlex">
-                <p id="generatedNum" class="hidden"> </p>
+                <p id="generatedNum" class="invisText"> </p>
                 <input type="number" id="userNum" rows="1"></textarea>
                 <p id="timer" class="hidden"></p>
                 <button type="button" class="hidden" id="submitButton" onclick="checkAnswer()">Submit</button>
@@ -28,7 +28,7 @@
                     <div class="btnBox rowFlex">
                         <div class="colFlex flexOne">
                             <label for="diff_1">1</label>
-                            <input type="radio" class="btn" id="diff_1" name="difficulty" onclick="initLevel(1)">
+                            <input type="radio" class="btn" id="diff_1" name="difficulty" onclick="initLevel(1)" checked="true"">
                         </div>
                         <div class="colFlex flexOne">
                             <label for="diff_2">2</label>

@@ -11,6 +11,8 @@ let scoreValueWin = 0;
 let scoreValueLose = 0;
 let timerCurrentTime = 0;
 let timerEnabled = false;
+let streakCounter = 0;
+let streakMulti = 1;
 
 const timer = setInterval(() => {
     if(timerEnabled){
@@ -27,6 +29,8 @@ document.getElementById("userNum")
 
 toggleVisibilityOn(button);
 toggleVisibilityOn(answerTextBox);
+
+initLevel(1); // default difficulty
 
 function resetAnswer(){
     answerLength = 0;
@@ -48,99 +52,49 @@ function initLevel(levelNum){
 
 function setGameDifficulty (level) {
     gameDifficulty = level;
+    const levelGroupIdx = Math.ceil((level/3)-1);
     answerLength = level + 1;
     let diffStr = "";
+    const levelGroup = ["Easy - ", "Medium - ", "Hard - ", "Expert - "];
+    
+   
+    // calculate base score values
+    diffStr = levelGroup[levelGroupIdx] + level;
+    scoreValueWin = Math.pow(10,levelGroupIdx+1);
+    scoreValueLose = Math.pow(10,levelGroupIdx);
 
-    switch (level) {
-        case level = 1:
-            diffStr = "Easy - 1";
-            scoreValueWin = 10;
-            scoreValueLose = 0;
-            disableStrokeCounter();
-            turnOffTimer();
-        break;
-        case level = 2:
-            diffStr = "Easy - 2";
-            scoreValueWin = 15;
-            scoreValueLose = 0;
-            disableStrokeCounter();
-            turnOffTimer();
-        break;
-        case level = 3:
-            diffStr = "Easy - 3";
-            scoreValueWin = 20;
-            scoreValueLose = 0;
-            disableStrokeCounter();
-            turnOffTimer();
-        break;
-        case level = 4:
-            diffStr = "Medium - 4";
-            scoreValueWin = 100;
-            scoreValueLose = 0;
-            disableStrokeCounter();
-            turnOffTimer();
-        break;
-        case level = 5:
-            diffStr = "Medium - 5";
-            scoreValueWin = 150;
-            scoreValueLose = 0;
-            disableStrokeCounter();
-            turnOffTimer();
-        break;
-        case level = 6:
-            diffStr = "Medium - 6";
-            scoreValueWin = 200;
-            scoreValueLose = 0;
-            disableStrokeCounter();
-            turnOffTimer();
-        break;
-        case level = 7:
-            diffStr = "Hard - 7";
-            scoreValueWin = 1000;
-            scoreValueLose = -500;
-            enableStrokeCounter(answerLength);
-            turnOffTimer();
-        break;
-        case level = 8:
-            diffStr = "Hard - 8";
-            scoreValueWin = 1500;
-            scoreValueLose = -600;
-            enableStrokeCounter(answerLength);
-            turnOffTimer();
-        break;
-        case level = 9:
-            diffStr = "Hard - 9";
-            scoreValueWin = 2000;
-            scoreValueLose = -700;
-            enableStrokeCounter(answerLength);
-            turnOffTimer();
-        break;
-        case level = 10:
-            diffStr = "Expert - 10";
-            scoreValueWin = 10000;
-            scoreValueLose = -3000;
-            answerLength = 10;
-            enableStrokeCounter(answerLength);
-            turnOnTimer(12);
-        break;
-        case level = 11:
-            diffStr = "Expert - 11";
-            scoreValueWin = 15000;
-            scoreValueLose = -4000;
-            answerLength = 10;
-            turnOnTimer(10);
-            enableStrokeCounter(answerLength);
-        break;
-        case level = 12:
-            diffStr = "Expert - 12";
-            scoreValueWin = 20000;
-            scoreValueLose = -5000;
-            answerLength = 10;
-            enableStrokeCounter(answerLength);
-            turnOnTimer(8);
-        break;
+    // differentiate per level within group
+    if (level % 3 === 0){//3 6 9 12
+        scoreValueWin *= 2;
+        scoreValueLose = Math.floor(scoreValueLose) * 5;
+    } else if(level % 3 === 2){ //2 5 8 11
+        scoreValueWin *= 1.5;
+        scoreValueLose = Math.floor(scoreValueLose) * 3;
+    } else {
+    } 
+
+    if (levelGroupIdx <= 1) { // level setup
+        disableStrokeCounter();
+        turnOffTimer();
+    } else if (levelGroupIdx === 2){
+ 
+        enableStrokeCounter(answerLength);
+        turnOffTimer();
+    } else {
+        answerLength = 10;
+        enableStrokeCounter(answerLength);
+        switch (level) {
+            case level = 10:
+                turnOnTimer(12);
+            break;
+            case level = 11:
+                turnOnTimer(10);
+            break;
+            case level = 12:
+                turnOnTimer(8);
+            break;
+        }
     }
-
     document.getElementById("difficulty").innerHTML = diffStr;
 }
 
@@ -158,24 +112,41 @@ function uploadAnswer () {
 
 function checkAnswer () {
     const userAnswer = document.getElementById("userNum").value;
+    let tempPoints = 0;
 
     if (answer === "") {
         return alert("Please choose a difficulty first!");
     } else if ( userAnswer == answer) {
-        alert('You won! Congratulations!');
         totalWins++;
-        fixPoints(scoreValueWin);
+        setStreakCounter();
+        tempPoints = Math.floor(streakMulti * scoreValueWin);
+        fixPoints(tempPoints);
+        alert(`${streakMulti > 1 ? 
+            "Hot Streak! " + streakCounter + " in a row!" + " Multiplier: " + streakMulti : 
+            "You Won!"} \nYou got ${tempPoints} points! Congratulations!`);
     } else {
-        fixPoints(scoreValueLose);
-        alert(`WRONG!\nThe correct answer was ${answer}! \nBetter luck next time!`);
+        tempPoints = Math.floor(scoreValueLose);
+        fixPoints(-tempPoints);
+        streakCounter = 0;
+        alert(`WRONG! You lost ${tempPoints} points!\nThe correct answer was ${answer}! \nBetter luck next time!`);
     }
     
     totalGames++;
     endGame();
 }
 
+function setStreakCounter(){
+    streakCounter++;
+    if(streakCounter <= 2){
+        streakMulti = 1;
+    } else {
+        streakMulti += .05;
+    }
+    streakMulti = Math.trunc(streakMulti * 100)/100;
+}
+
 function fixPoints (points) {
-    score += points;
+    score += Math.floor(points);
 }
 
 function updateScore () {
@@ -197,13 +168,17 @@ function endGame () {
 function toggleVisibilityOn (element) {
     if (element.classList.contains("hidden")){
         element.classList.toggle("hidden");
+    }else if (element.classList.contains("invisText")) {
+        element.classList.toggle("invisText");
     }
 }
 
 function toggleVisibilityOff (element) {
-    if (!element.classList.contains("hidden")){
+    if(element == answerTextBox) {
+        element.classList.toggle("invisText");
+    }else if (!element.classList.contains("hidden")){
         element.classList.toggle("hidden");
-    }
+    } 
 }
 
 function enableStrokeCounter (maxStrokes) {
