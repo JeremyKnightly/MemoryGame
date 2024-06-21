@@ -47,8 +47,25 @@ function initLevel(levelNum){
     generateAnswer(answerLength);
     uploadAnswer();
 
-    initDifficultyMeasures();
+    //initDifficultyMeasures();
 }
+
+function setWinLossVals (levelGroupIdx, level) {
+    let winVal = Math.pow(10,levelGroupIdx+1);
+    let lossVal = Math.pow(10,levelGroupIdx);
+    if (level % 3 === 0){//3 6 9 12
+        winVal *= 2;
+        lossVal = Math.floor(scoreValueLose) * 5;
+    } else if(level % 3 === 2){ //2 5 8 11
+        winVal *= 1.5;
+        lossVal = Math.floor(scoreValueLose) * 3;
+    } else {
+    } 
+
+    scoreValueWin=-winVal;
+    scoreValueLose=lossVal;
+}
+
 
 function setGameDifficulty (level) {
     gameDifficulty = level;
@@ -57,27 +74,14 @@ function setGameDifficulty (level) {
     let diffStr = "";
     const levelGroup = ["Easy - ", "Medium - ", "Hard - ", "Expert - "];
     
-   
-    // calculate base score values
     diffStr = levelGroup[levelGroupIdx] + level;
-    scoreValueWin = Math.pow(10,levelGroupIdx+1);
-    scoreValueLose = Math.pow(10,levelGroupIdx);
+    setWinLossVals(levelGroupIdx,level);
 
-    // differentiate per level within group
-    if (level % 3 === 0){//3 6 9 12
-        scoreValueWin *= 2;
-        scoreValueLose = Math.floor(scoreValueLose) * 5;
-    } else if(level % 3 === 2){ //2 5 8 11
-        scoreValueWin *= 1.5;
-        scoreValueLose = Math.floor(scoreValueLose) * 3;
-    } else {
-    } 
 
     if (levelGroupIdx <= 1) { // level setup
         disableStrokeCounter();
         turnOffTimer();
     } else if (levelGroupIdx === 2){
- 
         enableStrokeCounter(answerLength);
         turnOffTimer();
     } else {
@@ -193,8 +197,9 @@ function disableStrokeCounter () {
 
 function checkStroke () {
     numKeyStrokes++;
+    alert(1 + hitEnter());
     if(numKeyStrokes === 1) toggleVisibilityOff(answerTextBox);
-    if (numKeyStrokes >= maxKeyStrokes) {
+    if (numKeyStrokes >= maxKeyStrokes || hitEnter()) {
         checkAnswer();
     } 
 }
@@ -213,4 +218,13 @@ function turnOnTimer (seconds) {
 
 function updateTimerDisplay (seconds) {
     timerDisplay.innerHTML = seconds;
+}
+
+function hitEnter(){
+    alert("In Hit");
+    if(answerTextBox.value.charCodeAt(answerTextBox.value.length-1) == 13){
+        return true;
+    }
+    alert(answerTextBox.value.charCodeAt(answerTextBox.value.length-1));
+    return false;
 }
