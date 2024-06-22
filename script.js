@@ -198,11 +198,14 @@ function disableStrokeCounter () {
     maxKeyStrokes = Infinity;
 }
 
-function checkStroke () {
+function checkStroke (keystroke) {
+    const keyCode = keystroke.keyCode;
     numKeyStrokes++;
-    alert(hitEnter());
     if(numKeyStrokes === 1) toggleVisibilityOff(answerTextBox);
-    if (numKeyStrokes >= maxKeyStrokes || hitEnter()) {
+    if(numKeyStrokes >= maxKeyStrokes){
+        checkAnswer(); // make this happen as you type
+    }
+    if (hitEnter(keyCode)) {
         checkAnswer();
     } 
 }
@@ -223,12 +226,11 @@ function updateTimerDisplay (seconds) {
     timerDisplay.innerHTML = seconds;
 }
 
-function hitEnter(){
+function hitEnter(keyCode){
 
     const str = userNum.value;
-    alert(str.charAt(str.length-1));
-    alert(str.charCodeAt(str.length-1));
-    if(str.charAt(str.length-1).charCodeAt(0) == 13){
+    alert(keyCode);
+    if(keyCode == 13){
         return true;
     }
     return false;
