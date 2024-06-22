@@ -24,8 +24,8 @@ const timer = setInterval(() => {
 const timerDisplay = document.getElementById("timer");
 const button = document.getElementById("submitButton");
 const answerTextBox = document.getElementById("generatedNum");
-document.getElementById("userNum")
-    .addEventListener('keyup', checkStroke);
+const userNum = document.getElementById("userNum");
+userNum.addEventListener('keyup', checkStroke);
 
 toggleVisibilityOn(button);
 toggleVisibilityOn(answerTextBox);
@@ -66,7 +66,6 @@ function setWinLossVals (levelGroupIdx, level) {
     scoreValueLose=lossVal;
 }
 
-
 function setGameDifficulty (level) {
     gameDifficulty = level;
     const levelGroupIdx = Math.ceil((level/3)-1);
@@ -87,19 +86,23 @@ function setGameDifficulty (level) {
     } else {
         answerLength = 10;
         enableStrokeCounter(answerLength);
-        switch (level) {
-            case level = 10:
-                turnOnTimer(12);
-            break;
-            case level = 11:
-                turnOnTimer(10);
-            break;
-            case level = 12:
-                turnOnTimer(8);
-            break;
-        }
+        setTimer(level);
     }
     document.getElementById("difficulty").innerHTML = diffStr;
+}
+
+function setTimer(level){
+    switch (level) {
+        case level = 10:
+            turnOnTimer(12);
+        break;
+        case level = 11:
+            turnOnTimer(10);
+        break;
+        case level = 12:
+            turnOnTimer(8);
+        break;
+    }
 }
 
 function generateAnswer (length) {
@@ -197,7 +200,7 @@ function disableStrokeCounter () {
 
 function checkStroke () {
     numKeyStrokes++;
-    alert(1 + hitEnter());
+    alert(hitEnter());
     if(numKeyStrokes === 1) toggleVisibilityOff(answerTextBox);
     if (numKeyStrokes >= maxKeyStrokes || hitEnter()) {
         checkAnswer();
@@ -221,10 +224,12 @@ function updateTimerDisplay (seconds) {
 }
 
 function hitEnter(){
-    alert("In Hit");
-    if(answerTextBox.value.charCodeAt(answerTextBox.value.length-1) == 13){
+
+    const str = userNum.value;
+    alert(str.charAt(str.length-1));
+    alert(str.charCodeAt(str.length-1));
+    if(str.charAt(str.length-1).charCodeAt(0) == 13){
         return true;
     }
-    alert(answerTextBox.value.charCodeAt(answerTextBox.value.length-1));
     return false;
 }
