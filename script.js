@@ -62,8 +62,8 @@ function setWinLossVals (levelGroupIdx, level) {
     } else {
     } 
 
-    scoreValueWin=-winVal;
-    scoreValueLose=lossVal;
+    scoreValueWin=winVal;
+    scoreValueLose=-lossVal;
 }
 
 function setGameDifficulty (level) {
@@ -117,29 +117,44 @@ function uploadAnswer () {
     document.getElementById("generatedNum").innerHTML = answer;
 }
 
+function winGame () {
+    let tempPoints = 0;
+
+    totalWins++;
+    setStreakCounter();
+    tempPoints = Math.floor(streakMulti * scoreValueWin);
+    fixPoints(tempPoints);
+    alert(`${streakMulti > 1 ? 
+        "Hot Streak: " + streakCounter + " in a row!" + " Multiplier: " + streakMulti : 
+        "You Won!"} \nYou got ${tempPoints} points! Congratulations!`);
+
+    totalGames++;
+    endGame();
+}
+
+function loseGame () {
+    let tempPoints = 0;
+
+    tempPoints = Math.floor(scoreValueLose);
+    fixPoints(tempPoints);
+    streakCounter = 0;
+    alert(`WRONG! You lost ${-tempPoints} points!\nThe correct answer was ${answer}! \nBetter luck next time!`);
+
+    totalGames++;
+    endGame();
+}
+
 function checkAnswer () {
-    const userAnswer = document.getElementById("userNum").value;
+    const userNumVal = userNum.value;
     let tempPoints = 0;
 
     if (answer === "") {
         return alert("Please choose a difficulty first!");
-    } else if ( userAnswer == answer) {
-        totalWins++;
-        setStreakCounter();
-        tempPoints = Math.floor(streakMulti * scoreValueWin);
-        fixPoints(tempPoints);
-        alert(`${streakMulti > 1 ? 
-            "Hot Streak! " + streakCounter + " in a row!" + " Multiplier: " + streakMulti : 
-            "You Won!"} \nYou got ${tempPoints} points! Congratulations!`);
+    } else if ( userNumVal == answer) {
+        winGame();
     } else {
-        tempPoints = Math.floor(scoreValueLose);
-        fixPoints(-tempPoints);
-        streakCounter = 0;
-        alert(`WRONG! You lost ${tempPoints} points!\nThe correct answer was ${answer}! \nBetter luck next time!`);
+        loseGame();
     }
-    
-    totalGames++;
-    endGame();
 }
 
 function setStreakCounter(){
@@ -201,13 +216,17 @@ function disableStrokeCounter () {
 function checkStroke (keystroke) {
     const keyCode = keystroke.keyCode;
     numKeyStrokes++;
+    let flawless = true;
+
     if(numKeyStrokes === 1) toggleVisibilityOff(answerTextBox);
-    if(numKeyStrokes >= maxKeyStrokes){
-        checkAnswer(); // make this happen as you type
-    }
-    if (hitEnter(keyCode)) {
+    if (hitEnter(keyCode) || numKeyStrokes >= maxKeyStrokes) {
         checkAnswer();
-    } 
+    } else if(maxKeyStrokes < Infinity){
+        flawless = checkFlawless();
+        if (!flawless) {
+            loseGame();
+        }
+    }
 }
 
 function turnOffTimer () {
@@ -229,9 +248,19 @@ function updateTimerDisplay (seconds) {
 function hitEnter(keyCode){
 
     const str = userNum.value;
-    alert(keyCode);
+    // alert(keyCode);
     if(keyCode == 13){
         return true;
     }
     return false;
+}
+
+function checkFlawless () {
+    const userNumVal = userNum.value;
+    for (let i = 0; i < userNumVal.length; i++){
+        if(!(userNumVal[i] === answer[i])) {
+            return false;
+        }
+    }
+    return true;
 }
